@@ -1,0 +1,202 @@
+
+
+===
+select all from actors :
+
+SELECT * FROM actor or  
+----- same as ---- 
+SELECT * FROM public.actor   
+
+===
+
+SELECT first_name, last_name FROM public.actor
+
+===
+-- where no duplicates or unique values :
+How many districts do we servise?
+
+SELECT DISTINCT district FROM address
+
+===
+select * from city where  city like 'Abu Dhabi'
+
+===
+% - is called the Wildcard operator
+select * from city where  city like 'A%'
+
+Matches one or more characters.
+
+Note − MS Access uses the asterisk (*) wildcard character instead of the percent sign (%) wildcard character.
+===
+_(underscore)  also the Wildcard
+Matches one character.
+
+Note − MS Access uses a question mark (?) instead of the underscore (_) to match any one character.
+select * from city where  city like 'A_r%'
+-- returns Acron, Amroha and Aurora 
+
+----------
+select * from city where  city like 'A_r%a' ==> Amroha and Aurora 
+===
+
+select * from customer where  first_name ='Maria'
+
+===
+-- change column name(labes): 
+
+select first_name as "First Name", last_name from customer
+===
+   ------------ BUILD IN FUNCTIONS -------- MAX, MIN, SUM, AVG, COUNT, SUM...
+
+-- make one column out of two:
+
+select concat (first_name, ' ', last_name)
+from customer
+--  
+select concat (first_name, ' ', last_name) as " First, Last"
+from customer
+
+===
+
+How much the highest rental cost?
+select max(amount) from payment
+
+---
+select max(amount), min(amount), avg(amount) from payment;
+====
+
+------- COMPARISONS ----------  
+
+SELECT * FROM film WHERE rental_duration >6;
+
+SELECT * FROM film WHERE rental_duration <4;
+
+SELECT * FROM film WHERE rental_duration = 6
+
+===
+
+-- PRIMARY KEY - unique id(identifier) for each individual table
+===
+
+-- customers name to a rental (relational date) 
+
+=== 
+SELECT
+FROM
+JOIN
+WHERE
+GROUP BY
+HAVING
+ORDER BY
+LIMIT
+
+---- JOIN two columns ---
+
+SELECT col1,col2,...
+FROM table_a
+JOIN table_b ON table_a = table_b
+
+SELECT col1,col2,...
+FROM table_a
+JOIN table_b ON table_a.payment_id= table_b.payment_id
+
+---
+SELECT rental_id, rental_date, return_date, customer.customer_id, first_name,last_name 
+FROM rental
+JOIN customer ON rental.customer_id = customer.customer_id
+---
+SELECT * 
+FROM rental
+JOIN customer ON rental.customer_id = customer.customer_id
+----
+
+===
+SELECT rating
+FROM film
+GROUP BY rating
+
+----
+SELECT rating, COUNT(RATING)
+FROM film
+GROUP BY rating
+---- SAME AS ----
+
+SELECT rating, COUNT(*)
+FROM film
+GROUP BY rating
+-----
+NOTE: this data doesn't even exist in the original data
+ALSO: WHRE clause doesn't work, and we should use HAVING COUNT clause
+
+SELECT rating, COUNT(*)
+FROM film
+GROUP BY rating
+HAVING COUNT(*)>195
+
+!!! FOR GROUP BY:
+"HAVING" is used inplase of  "WHERE" only if you using "GROUP BY" 
+"HAVING" is used for data that doen't exist untill you do GROUP BY
+"WHERE"  is used for data that exists just for each individual record
+
+===
+
+SELECT *
+FROM film
+LIMIT 5
+
+===
+
+SELECT rating, COUNT (*)
+FROM film
+GROUP BY rating
+ORDER BY COUNT (*)
+DESC
+
+===
+
+---- join as many tables as you want as long as you have common columns in them 
+
+SELECT rental.rental_id, rental.rental_date, rental.return_date, customer.customer_id,customer.first_name, customer. last_name, staff.staff_id, staff.first_name, staff.last_name
+FROM rental
+JOIN customer ON rental.customer_id=customer.customer_id
+JOIN staff ON rental.staff_id = staff.staff_id 
+
+auxiliary table - вспомогательный стол ( it is only for joing tables together and nothing else) 
+===
+
+SQL (Structured Query Language) — язык структурированных запросов
+Первый вариант стандарта, принятый институтом ANSI и одобренный ISO в 1987 году.
+2006 - Функциональность работы с XML-данными значительно расширена. Появилась возможность совместно использовать в запросах SQL и XQuery.
+2011 - Реализована поддержка хронологических баз данных (PERIOD FOR), поддержка конструкции FETCH[8].
+2016 - Защита на уровне строк, полиморфные табличные функции, JSON.
+
+===
+Different Types of SQL JOINs
+Here are the different types of the JOINs in SQL:
+
+
+(INNER) JOIN: Returns records that have matching values in both tables
+
+LEFT (OUTER) JOIN: Returns all records from the left table, and the matched records from the right table
+---data has to be present in the left table, and it will fill in the right table whatever it matches, but if there aren't matches it will fill a table with a blank data.
+RIGHT (OUTER) JOIN: Returns all records from the right table, and the matched records from the left table
+-- the same will applies to the right joing. It will only fill right table, and it will see if there are any matches in the left table.  
+FULL (OUTER) JOIN: Returns all records when there is a match in either left or right table
+===
+
+SUBQUERIES:
+-- Find the average of something bellow the sertain amount:
+
+SELECT AVG(amount)
+FROM payment;    ---- gives us only a single value
+-- This is just showing  us how to dinamicaly get information and how to execute subquerie (
+выполнить подзапрос) based on that dinamic info that you are pulling. 
+
+
+SELECT *
+fROM payment
+WHERE amount >
+	(
+		SELECT AVG(amount)
+		FROM payment
+	) 
